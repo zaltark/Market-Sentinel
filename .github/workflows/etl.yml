@@ -1,0 +1,37 @@
+name: Market Sentinel - 15m Schedule
+
+on:
+  # 1. Automatic Trigger: Runs every 15 minutes
+  schedule:
+    - cron: '*/15 * * * *'
+  
+  # 2. Manual Trigger: Adds a "Run Now" button in GitHub for testing
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step A: Check out your code from the repo
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step B: Install Python 3.9
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # Step C: Install your libraries (pandas, psycopg2, etc.)
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # Step D: Run the Orchestrator
+      # We inject the database password securely here from GitHub Secrets
+      - name: Run Ingest Script
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python ingest.py
