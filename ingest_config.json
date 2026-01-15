@@ -1,5 +1,5 @@
 {
-    "mode": "dry-run",
+    "mode": "ingest",
     "limit": 500,
     "targets": null
 }
