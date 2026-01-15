@@ -12,11 +12,15 @@ def reset_table():
         try:
             conn = psycopg2.connect(os.getenv("DATABASE_URL"))
             cur = conn.cursor()
-            cur.execute("TRUNCATE TABLE market_data;")
+            cur.execute("DROP TABLE IF EXISTS market_data;")
             conn.commit()
-            print("✅ Table 'market_data' has been truncated (wiped clean).")
+            print("✅ Table 'market_data' has been DROPPED.")
             cur.close()
             conn.close()
+            
+            # Recreate using the latest schema in database.py
+            import database
+            database.init_db()
         except Exception as e:
             print(f"❌ Error: {e}")
     else:

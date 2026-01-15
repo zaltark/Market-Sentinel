@@ -26,9 +26,9 @@ def init_db():
         id SERIAL PRIMARY KEY,
         coin_id VARCHAR(255) NOT NULL,
         symbol VARCHAR(50) NOT NULL,
-        price_usd FLOAT,
-        market_cap FLOAT,
-        volume_24h FLOAT,
+        price NUMERIC,
+        market_cap NUMERIC,
+        volume_24h NUMERIC,
         timestamp TIMESTAMPTZ NOT NULL,
         UNIQUE(coin_id, timestamp) -- Critical for preventing duplicates
     );
@@ -62,11 +62,11 @@ def load_batch(records):
     # 1. Try to Insert.
     # 2. If (coin_id + timestamp) conflict, Update the values instead.
     upsert_query = """
-    INSERT INTO market_data (coin_id, symbol, price_usd, market_cap, volume_24h, timestamp)
+    INSERT INTO market_data (coin_id, symbol, price, market_cap, volume_24h, timestamp)
     VALUES %s
     ON CONFLICT (coin_id, timestamp) 
     DO UPDATE SET
-        price_usd = EXCLUDED.price_usd,
+        price = EXCLUDED.price,
         market_cap = EXCLUDED.market_cap,
         volume_24h = EXCLUDED.volume_24h;
     """
