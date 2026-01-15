@@ -116,6 +116,21 @@ class CoinGeckoEndpoints:
     PRO_GLOBAL_MARKET_CAP_CHART = "/global/market_cap_chart"
     
     @classmethod
+    def get_auth_config(cls):
+        """
+        Retrieves API Key and determine the correct header from Environment.
+        Returns: (header_name, api_key) or (None, None)
+        """
+        api_key = os.getenv("COINGECKO_API_KEY")
+        is_pro = os.getenv("COINGECKO_IS_PRO", "false").lower() == "true"
+        
+        if not api_key:
+            return None, None
+            
+        header = "x-cg-pro-api-key" if is_pro else "x-cg-demo-api-key"
+        return header, api_key
+
+    @classmethod
     def build_url(cls, endpoint, is_pro=False):
         """
         Constructs the full API URL.
