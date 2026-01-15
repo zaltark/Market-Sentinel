@@ -40,10 +40,13 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: python ingest.py
 
-      # Step E: Save "Self-Healing" Updates
-      # If the registry updated (e.g. marked coins inactive), commit it back.
+      # Step E: Save "Memory" (Commit changes to coin_registry.json)
       - name: Commit Registry Updates
         run: |
+          # 1. Configure the "Bot" identity (MUST be first)
+          git config --global user.name "Market Sentinel Bot"
+          git config --global user.email "bot@marketsentinel.local"
+          
           # 2. Check if the registry OR usage log changed
           if [[ -n $(git status --porcelain coin_registry.json) || -n $(git status --porcelain usage_log.json) ]]; then
             echo "🧠 Registry or Usage updated. Saving memory..."
