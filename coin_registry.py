@@ -10,7 +10,7 @@ from api_library import CoinGeckoEndpoints
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-REGISTRY_FILE = "coin_registry.json"
+REGISTRY_FILE = safe_zone.REGISTRY_FILE
 LIST_API_URL = CoinGeckoEndpoints.build_url(CoinGeckoEndpoints.COINS_LIST)
 MARKETS_API_URL = CoinGeckoEndpoints.build_url(CoinGeckoEndpoints.COINS_MARKETS)
 

@@ -2,6 +2,7 @@ import os
 import psycopg2
 from psycopg2.extras import execute_values
 from dotenv import load_dotenv
+import safe_zone
 
 # Load environment variables
 load_dotenv()
@@ -87,9 +88,9 @@ def load_batch(records):
 
 def enforce_retention_policy():
     """
-    Deletes data older than 60 days to keep storage costs low.
+    Deletes data older than configured retention period (default 60 days).
     """
-    retention_query = "DELETE FROM market_data WHERE timestamp < NOW() - INTERVAL '60 days';"
+    retention_query = f"DELETE FROM market_data WHERE timestamp < NOW() - INTERVAL '{safe_zone.RETENTION_DAYS} days';"
     
     conn = get_db_connection()
     cur = conn.cursor()
@@ -98,7 +99,7 @@ def enforce_retention_policy():
         deleted_count = cur.rowcount
         conn.commit()
         if deleted_count > 0:
-            print(f"🧹 Retention Policy: Purged {deleted_count} old records.")
+            print(f"🧹 Retention Policy: Purged {deleted_count} old records (>{safe_zone.RETENTION_DAYS} days).")
     except Exception as e:
         print(f"❌ Retention Policy Failed: {e}")
     finally:
