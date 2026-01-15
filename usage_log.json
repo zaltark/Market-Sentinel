@@ -3,5 +3,10 @@
     "timestamp": "2026-01-15T18:00:18.521090",
     "duration_sec": 10.6,
     "billable_sec": 310.6
+  },
+  {
+    "timestamp": "2026-01-15T18:38:07.461453",
+    "duration_sec": 12.54,
+    "billable_sec": 312.54
   }
 ]
