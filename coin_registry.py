@@ -20,10 +20,22 @@ class CoinRegistry:
 
     def _load_registry(self):
         """
-        Always fetches a fresh registry to ensure Top 250 sync.
-        (Local file is saved/used only as fallback if API fails).
+        Loads the registry from disk if it exists and is recent (< 24h).
+        Otherwise, fetches a fresh registry.
         """
-        logger.info("Initializing Registry: Forcing fresh sync with CoinGecko...")
+        if os.path.exists(REGISTRY_FILE):
+            file_age = time.time() - os.path.getmtime(REGISTRY_FILE)
+            if file_age < 86400: # 24 hours
+                try:
+                    with open(REGISTRY_FILE, 'r') as f:
+                        data = json.load(f)
+                        if data:
+                            logger.info(f"Loaded cached registry from {REGISTRY_FILE} ({int(file_age/3600)}h old).")
+                            return data
+                except Exception as e:
+                    logger.warning(f"Failed to read registry cache: {e}")
+
+        logger.info("Registry cache missing or expired. Syncing with CoinGecko...")
         return self._fetch_and_save_registry()
 
     def _fetch_and_save_registry(self):

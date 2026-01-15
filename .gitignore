@@ -16,6 +16,7 @@ htmlcov/
 # Logs
 usage_log.json
 *.log
+trades.csv
 
 # Project Specific
 # Tracking registry and config for GitHub Actions

@@ -1,3 +1,5 @@
+import os
+
 """
 Centralized library of CoinGecko API endpoints.
 Reference: https://docs.coingecko.com/v3.0.1/reference/

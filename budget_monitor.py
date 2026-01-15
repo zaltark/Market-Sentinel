@@ -73,3 +73,6 @@ def check_budget_status():
     
     if percent_used > 80:
         print("   ⚠️ WARNING: You are approaching your monthly limit!")
+
+if __name__ == "__main__":
+    check_budget_status()

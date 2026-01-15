@@ -14,7 +14,7 @@ def test_restricted_endpoint():
     restricted_url = "https://api.coingecko.com/api/v3/coins/top_gainers_losers"
     
     # Initialize Sentinel
-    sentinel = MarketSentinel(db_url=None)
+    sentinel = MarketSentinel()
     
     # We simulate hitting the restricted endpoint by manually calling the logic 
     # but using the restricted URL
