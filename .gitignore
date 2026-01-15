@@ -18,5 +18,4 @@ usage_log.json
 *.log
 
 # Project Specific
-coin_registry.json
-ingest_config.json
+# Tracking registry and config for GitHub Actions
