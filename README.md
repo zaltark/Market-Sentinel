@@ -99,7 +99,6 @@ The pipeline includes a "Strike System" for asset health:
 *   **Phase 3: Storage** - `[COMPLETED]` (Neon Serverless Postgres, Efficient Upserts, Retention Policy)
 *   **Phase 4: Automation** - `[COMPLETED]` (GitHub Actions Cron / Manual Trigger)
 *   **Phase 5: Full Autonomy** - `[COMPLETED]` (Self-Healing Registry & Persistent Memory)
-*   **Phase 6: Visualization** - `[PLANNED]` (Plotly Dash)
 
 ## Why this Portfolio Project Wins
 
