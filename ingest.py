@@ -103,6 +103,10 @@ class MarketSentinel:
             logger.warning(f"      Solution: Rate Limit Hit. Retry-After: {retry_after}s (Handling via Backoff).")
 
 def main():
+    # 1. Check the budget FIRST
+    print("[*] Checking Budget...")
+    budget_monitor.check_budget_status()
+
     # Load defaults from config file
     config_defaults = {
         "mode": "ingest",

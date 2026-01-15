@@ -85,5 +85,10 @@ def check_budget_status():
     if percent_used > 80:
         print("   ⚠️ WARNING: You are approaching your monthly limit!")
 
+    if percent_used >= 100:
+        print("   ⛔ CRITICAL: Budget limit reached! Stopping execution.")
+        import sys
+        sys.exit(1)
+
 if __name__ == "__main__":
     check_budget_status()
