@@ -45,31 +45,7 @@
 
 This system follows a robust **Extract-Transform-Load (ETL)** pattern designed for resilience, scalability, and cost-efficiency.
 
-```mermaid
-graph TD
-    subgraph "Orchestration & Safety"
-        Ingest[ingest.py] -->|1. Load Config| Config[ingest_config.json]
-        Ingest -->|2. Sync Registry| Registry[coin_registry.py]
-        Budget[budget_monitor.py] -.->|Monitor Start/End| Ingest
-    end
-
-    subgraph "Extraction (API)"
-        Registry -->|Filter Ghosts| TargetList[Active Assets]
-        Ingest -->|3. Fetch Chunks| API[api_library.py]
-        API -->|HTTP GET / Backoff| CoinGecko[CoinGecko API]
-    end
-
-    subgraph "Transformation (Logic)"
-        Ingest -->|4. Normalize| Transform[transform.py]
-        Transform -->|Validate Schema| CleanData[Clean Tuples]
-    end
-
-    subgraph "Storage (Postgres)"
-        Ingest -->|5. Upsert Batch| DB[database.py]
-        DB -->|SQL Connection| Neon[Neon Postgres]
-        DB -->|6. Auto-Purge| Retention[Retention Policy]
-    end
-```
+![Market Sentinel Architecture](https://mermaid.ink/img/Z3JhcGggVEQKICAgIHN1YmdyYXBoICIxLiBPcmNoZXN0cmF0aW9uICYgU2FmZXR5IgogICAgICAgIEluZ2VzdFtoW5nZXN0LnB5XSAtLT58TG9hZHwgQ29uZmlnW2luZ2VzdF9jb25maWcuanNvbl0KICAgICAgICBJbmdlc3QgLS0+fFN5bmN8IFJlZ2lzdHJ5W2NvaW5fcmVnaXN0cnkucHldCiAgICAgICAgQnVkZ2V0W2J1ZGdldF9tb25pdG9yLnB5XSAtLi0+fE1vbml0b3J8IEluZ2VzdAogICAgZW5kCgogICAgc3ViZ3JhcGggIjIuIEV4dHJhY3Rpb24gKEFQSSkiCiAgICAgICAgUmVnaXN0cnkgLS0+fFRhcmdldHwgQVBJW2FwaV9saWJyYXJ5LnB5XQogICAgICAgIEFQSSAtLT58RmV0Y2h8IENvaW5HZWNrby1Db2luR2Vja28gQVBJXQogICAgZW5kCgogICAgc3ViZ3JhcGggIjMuIFRyYW5zZm9ybWF0aW9uIChMb2dpYykiCiAgICAgICAgQ29pbkdlY2tvIC0tPnxSYXcgSlNPTnwgVHJhbnNmb3JtW3RyYW5zZm9ybS5weV0KICAgICAgICBUcmFuc2Zvcm0gLS0+fFZhbGlkYXRlfCBDbGVhbkRhdGFbQ2xlYW4gVHVwbGVzXQogICAgZW5kCgogICAgc3ViZ3JhcGggIjQuIFN0b3JhZ2UgKFBvc3RncmVzKSIKICAgICAgICBDbGVhbkRhdGEgLS0+fFVwc2VydHwgREJbZGF0YWJhc2UucHldCiAgICAgICAgREIgLS0+fFNRTHwgTmVvbltOZW9uIFBvc3RncmVzXQogICAgICAgIERCIC0tPnxQdXJnZXwgUmV0ZW50aW9uWzYwLURheSBSZXRlbnRpb25dCiAgICBlbmQ)
 
 1.  **Orchestrator (`ingest.py`):** The central nervous system. It coordinates the lifecycle, managing configuration, logging, and execution flow.
 2.  **The Registry (`coin_registry.py`):** A smart filter that resolves symbols (e.g., "BTC" -> "bitcoin") and blocks "Ghost Coins" (dead assets) to save API credits.
