@@ -1,0 +1,22 @@
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+usage_log.json
+*.log
+
+# Project Specific
+coin_registry.json
+ingest_config.json
